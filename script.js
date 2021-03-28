@@ -9,6 +9,11 @@ const fetchMembers = async () => {
   return apiResponse.json();
 }
 
+const fetchThisMemberOnly = async (thisMember) => {
+  const apiResponse = await fetch(`${apiGitHubURL}users/${thisMember}`);
+  return apiResponse.json();
+}
+
 const setSelectOptions = async () => {
   const allMembers = await fetchMembers();
   allMembers.forEach(({login}) => {
@@ -47,5 +52,17 @@ const displayAllMembers = async () => {
   });
 }
 
+const displayThisMemberOnly = async (event) => {
+  userContainer.innerHTML = '';
+  const selectedMember = event.target.value;
+  if (selectedMember === '') return displayAllMembers();
+  const thisMemberOnly = await fetchThisMemberOnly(selectedMember);
+  const { avatar_url, login } = thisMemberOnly;
+  const singleCardContainer = document.createElement('div');
+    setInfoCard(singleCardContainer, avatar_url, login);
+}
+
 displayAllMembers();
 setSelectOptions();
+
+selectDropDown.addEventListener('change', displayThisMemberOnly);
