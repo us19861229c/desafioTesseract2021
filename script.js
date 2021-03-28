@@ -37,6 +37,19 @@ const createLoginTitleElement = (singleCard, loginText) => {
   singleCard.appendChild(loginElement);
 }
 
+const dateFormat = dateInfo => dateInfo.replaceAll('-', '/').slice(0,10)
+  .split("/").reverse().join("/");
+
+const createNumericDataInfo = ( public_repos, followers, created_at) => {
+  const repoQuantity = document.createElement('p');
+  repoQuantity.textContent = `Repos: ${public_repos}`;
+  const followersQuantity = document.createElement('p');
+  followersQuantity.textContent = `Seguidores: ${followers}`;
+  const createdAt = document.createElement('p');
+  createdAt.textContent = `Criado em: ${dateFormat(created_at)}`;
+  return [repoQuantity, followersQuantity, createdAt];
+}
+
 const setInfoCard = (singleCard, img_url, loginText) => {
   singleCard.setAttribute('id', `${loginText}Id`);
   createImgElement(singleCard, img_url, loginText);
@@ -44,11 +57,28 @@ const setInfoCard = (singleCard, img_url, loginText) => {
   userContainer.appendChild(singleCard);
 }
 
+async function showMoreInfo() {
+  this.classList.toggle('moreInfo')
+  if(this.className.includes('moreInfo')) {
+    const memberName = this.innerText;
+    const thisMember = await fetchThisMemberOnly(memberName);
+    const { public_repos, followers, created_at } = thisMember;
+    createNumericDataInfo(public_repos, followers, created_at ).forEach((tagElement) => {
+      this.appendChild(tagElement);
+    });
+  } else {
+    for (let i = 0; i <= 2; i += 1) {
+      this.removeChild(this.lastChild);
+    }
+  }
+}
+
 const displayAllMembers = async () => {
   const allMembers = await fetchMembers();
   allMembers.forEach(({avatar_url, login}) => {
     const singleCardContainer = document.createElement('div');
     setInfoCard(singleCardContainer, avatar_url, login);
+    singleCardContainer.addEventListener('click', showMoreInfo);
   });
 }
 
@@ -60,6 +90,7 @@ const displayThisMemberOnly = async (event) => {
   const { avatar_url, login } = thisMemberOnly;
   const singleCardContainer = document.createElement('div');
     setInfoCard(singleCardContainer, avatar_url, login);
+    singleCardContainer.addEventListener('click', showMoreInfo);
 }
 
 displayAllMembers();
