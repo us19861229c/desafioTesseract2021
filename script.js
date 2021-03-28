@@ -2,11 +2,22 @@ const apiGitHubURL = 'https://api.github.com/';
 const tesseractMembersURL = 'orgs/grupotesseract/public_members';
 
 const userContainer = document.querySelector('#userContainer');
+const selectDropDown = document.querySelector('#usersSelect');
 
 const fetchMembers = async () => {
   const apiResponse = await fetch(`${apiGitHubURL}${tesseractMembersURL}`);
   return apiResponse.json();
 }
+
+const setSelectOptions = async () => {
+  const allMembers = await fetchMembers();
+  allMembers.forEach(({login}) => {
+    const selectOptions = document.createElement('option');
+    selectOptions.innerText = login;
+    selectOptions.setAttribute('value', login);
+    selectDropDown.appendChild(selectOptions);
+  })
+} 
 
 const createImgElement = (singleCard, img_url, loginText) => {
   const imgElement = document.createElement('img');
@@ -37,3 +48,4 @@ const displayAllMembers = async () => {
 }
 
 displayAllMembers();
+setSelectOptions();
