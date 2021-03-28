@@ -25,15 +25,17 @@ const setSelectOptions = async () => {
 } 
 
 const createImgElement = (singleCard, img_url, loginText) => {
-  const imgElement = document.createElement('img');
+   const imgElement = document.createElement('img');
   imgElement.setAttribute('src', img_url);
   imgElement.setAttribute('alt', `avatar de ${loginText}`);
-  singleCard.appendChild(imgElement);
+  imgElement.setAttribute('class', 'image is-96x96 ');
+   singleCard.appendChild(imgElement);
 }
 
 const createLoginTitleElement = (singleCard, loginText) => {
-  const loginElement = document.createElement('h2');
+  const loginElement = document.createElement('p');
   loginElement.innerText = loginText;
+  loginElement.setAttribute('class', 'title is-6 ');
   singleCard.appendChild(loginElement);
 }
 
@@ -51,10 +53,14 @@ const createNumericDataInfo = ( public_repos, followers, created_at) => {
 }
 
 const setInfoCard = (singleCard, img_url, loginText) => {
+  const divCardStyle = document.createElement('div');
+  divCardStyle.setAttribute('class', 'column is-one-third is-narrow ');
   singleCard.setAttribute('id', `${loginText}Id`);
+  singleCard.setAttribute('class', 'container');
   createImgElement(singleCard, img_url, loginText);
-  createLoginTitleElement(singleCard, loginText)
-  userContainer.appendChild(singleCard);
+  createLoginTitleElement(singleCard, loginText);
+  divCardStyle.appendChild(singleCard)
+  userContainer.appendChild(divCardStyle);
 }
 
 async function showMoreInfo() {

@@ -3,18 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <title> Tesseract 2021 |  ✨ </title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
+  <link rel="stylesheet" href="./style.css">
 </head>
 <body>
   <header>
-    <h1>Desafio Tesseract 2021</h1>
+    <h1 class="title is-1 is-spaced has-text-white">
+      Desafio Tesseract 2021
+    </h1>
     <form action="">
-      <select name="usersSelect" id="usersSelect">
+      <select name="usersSelect" id="usersSelect" class="usersSelect">
         <option value="">filtrar por usuário</option>
       </select>
     </form>
   </header>
   <main>
-    <div class="userContainer" id="userContainer"></div>
+    <div class="userContainer columns is-multiline is-centered is-mobile" id="userContainer"></div>
   </main>
 </body>
 <script src="script.js"></script> 
